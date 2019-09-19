@@ -8,7 +8,7 @@ cyan='\e[96m'
 none='\e[0m'
 
 # Root
-[[ $(id -u) != 0 ]] && echo -e " 哎呀……请使用 ${red}root ${none}用户运行 ${yellow}~(^_^) ${none}" && exit 1
+[[ $(id -u) != 0 ]] && echo -e " 흠.. ${red}root ${none}계정으로 스크립트 실행해 주세요. ${yellow}~(^_^) ${none}" && exit 1
 
 _version="v3.13"
 
@@ -39,9 +39,9 @@ x86_64)
 	;;
 *)
 	echo -e " 
-	哈哈……这个 ${red}辣鸡脚本${none} 不支持你的系统。 ${yellow}(-_-) ${none}
+	하하..이 ${red}쑤레기 스크립트${none}는 당신의 시스템은 지원하지 않습니다. ${yellow}(-_-) ${none}
 
-	备注: 仅支持 Ubuntu 16+ / Debian 8+ / CentOS 7+ 系统
+	참고: Ubuntu 16+ / Debian 8+ / CentOS 7+ 시스템만 지원합니다.
 	" && exit 1
 	;;
 esac
@@ -63,7 +63,7 @@ elif [[ -f /usr/bin/v2ray/v2ray && -f /etc/v2ray/config.json ]] && [[ -f /etc/v2
 	. /etc/v2ray/233boy/v2ray/tools/v1xx_to_v3xx.sh
 
 else
-	echo -e " 哎呀哎呀…… ${red}出错咯...请重新安装V2Ray${none} ${yellow}~(^_^) ${none}" && exit 1
+	echo -e " 아이고.. ${red}에러났어요...V2Ray를 다시 설치해 주세요.${none} ${yellow}~(^_^) ${none}" && exit 1
 fi
 
 if [[ $mark != "v3" ]]; then
@@ -95,18 +95,18 @@ fi
 if [[ ! -f $_v2ray_sh ]]; then
 	mv -f /usr/local/bin/v2ray $_v2ray_sh
 	chmod +x $_v2ray_sh
-	echo -e "\n $yellow 警告: 请重新登录 SSH 以避免出现 v2ray 命令未找到的情况。$none  \n" && exit 1
+	echo -e "\n $yellow 경고: v2ray 명령을 찾지 못하는 상황을 방지하기 위해 SSH에 다시 로그인해 주세요.$none  \n" && exit 1
 fi
 
 if [ $v2ray_pid ]; then
-	v2ray_status="$green正在运行$none"
+	v2ray_status="$green실행중$none"
 else
-	v2ray_status="$red未在运行$none"
+	v2ray_status="$red중지됨$none"
 fi
 if [[ $v2ray_transport == [45] && $caddy ]] && [[ $caddy_pid ]]; then
-	caddy_run_status="$green正在运行$none"
+	caddy_run_status="$green실행중$none"
 else
-	caddy_run_status="$red未在运行$none"
+	caddy_run_status="$red중지됨$none"
 fi
 
 _load transport.sh
@@ -174,11 +174,11 @@ get_shadowsocks_config() {
 
 		while :; do
 			echo
-			echo -e "$yellow 1. $none查看 Shadowsocks 配置信息"
+			echo -e "$yellow 1. $none Shadowsocks 설정 정보 확인"
 			echo
-			echo -e "$yellow 2. $none生成二维码链接"
+			echo -e "$yellow 2. $none QR코드 링크 생성"
 			echo
-			read -p "$(echo -e "请选择 [${magenta}1-2$none]:")" _opt
+			read -p "$(echo -e "선택 [${magenta}1-2$none]:")" _opt
 			if [[ -z $_opt ]]; then
 				error
 			else
@@ -223,8 +223,8 @@ get_shadowsocks_config_qr_link() {
 get_shadowsocks_config_qr_ask() {
 	echo
 	while :; do
-		echo -e "是否需要生成$yellow Shadowsocks 配置信息 $none二维码链接 [${magenta}Y/N$none]"
-		read -p "$(echo -e "默认 [${magenta}N$none]:")" y_n
+		echo -e "$yellow Shadowsocks 설정 정보 $none QR코드 링크를 생성하시겠습니까? [${magenta}Y/N$none]"
+		read -p "$(echo -e "기본값 [${magenta}N$none]:")" y_n
 		[ -z $y_n ] && y_n="n"
 		if [[ $y_n == [Yy] ]]; then
 			get_shadowsocks_config_qr_link
@@ -242,15 +242,15 @@ change_shadowsocks_config() {
 
 		while :; do
 			echo
-			echo -e "$yellow 1. $none修改 Shadowsocks 端口"
+			echo -e "$yellow 1. $none Shadowsocks 포트 수정"
 			echo
-			echo -e "$yellow 2. $none修改 Shadowsocks 密码"
+			echo -e "$yellow 2. $none Shadowsocks 비밀번호 수정"
 			echo
-			echo -e "$yellow 3. $none修改 Shadowsocks 加密协议"
+			echo -e "$yellow 3. $none Shadowsocks 암호화 프로토콜 수정"
 			echo
-			echo -e "$yellow 4. $none关闭 Shadowsocks"
+			echo -e "$yellow 4. $none Shadowsocks 중단"
 			echo
-			read -p "$(echo -e "请选择 [${magenta}1-4$none]:")" _opt
+			read -p "$(echo -e "선택하세요 [${magenta}1-4$none]:")" _opt
 			if [[ -z $_opt ]]; then
 				error
 			else
@@ -286,13 +286,13 @@ change_shadowsocks_config() {
 shadowsocks_config() {
 	echo
 	echo
-	echo -e " $red大佬...你没有配置 Shadowsocks $none...不过现在想要配置的话也是可以的 ^_^"
+	echo -e " $red두목님... Shadowsocks 설치를 안하셨는데요$none... 뭐, 지금 설치하셔도 되구요. ^_^"
 	echo
 	echo
 
 	while :; do
-		echo -e "是否配置 ${yellow}Shadowsocks${none} [${magenta}Y/N$none]"
-		read -p "$(echo -e "(默认 [${cyan}N$none]):") " install_shadowsocks
+		echo -e "${yellow}Shadowsocks${none}를 설치하시겠습니까? [${magenta}Y/N$none]"
+		read -p "$(echo -e "(기본값 [${cyan}N$none]):") " install_shadowsocks
 		[[ -z "$install_shadowsocks" ]] && install_shadowsocks="n"
 		if [[ "$install_shadowsocks" == [Yy] ]]; then
 			echo
@@ -313,7 +313,7 @@ shadowsocks_config() {
 			break
 		elif [[ "$install_shadowsocks" == [Nn] ]]; then
 			echo
-			echo -e " $green已取消配置 Shadowsocks ....$none"
+			echo -e " $green Shadowsocks 설치를 중단하셨습니다....$none"
 			echo
 			break
 		else
@@ -325,15 +325,15 @@ shadowsocks_config() {
 shadowsocks_port_config() {
 	local random=$(shuf -i20001-65535 -n1)
 	while :; do
-		echo -e "请输入 "$yellow"Shadowsocks"$none" 端口 ["$magenta"1-65535"$none"]，不能和 "$yellow"V2ray"$none" 端口相同"
+		echo -e " "$yellow"Shadowsocks"$none" 포트번호를 입력해주세요. ["$magenta"1-65535"$none"]"$yellow"V2ray"$none" 포트번호와 동일한 번호는 사용할 수 없습니다."
 		read -p "$(echo -e "(默认端口: ${cyan}${random}$none):") " new_ssport
 		[ -z "$new_ssport" ] && new_ssport=$random
 		case $new_ssport in
 		$v2ray_port)
 			echo
-			echo -e " 不能和$cyan V2Ray 端口 $none一毛一样...."
+			echo -e " $cyan V2Ray 포트 $none와 같으면 안됩니다...."
 			echo
-			echo -e " 当前 V2Ray 端口：${cyan}$v2ray_port${none}"
+			echo -e " 기존 V2Ray 포트：${cyan}$v2ray_port${none}"
 			error
 			;;
 		[1-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-5][0-9][0-9][0-9][0-9] | 6[0-4][0-9][0-9][0-9] | 65[0-4][0-9][0-9] | 655[0-3][0-5])
@@ -342,30 +342,30 @@ shadowsocks_port_config() {
 			fi
 			if [[ $tls && $new_ssport == "80" ]] || [[ $tls && $new_ssport == "443" ]]; then
 				echo
-				echo -e "由于你当前已使用了 "$green"WebSocket + TLS $none或$green HTTP/2"$none" 传输协议."
+				echo -e " "$green"WebSocket + TLS $none및$green HTTP/2"$none" 전송 프로토콜이 사용중인 포트입니다."
 				echo
-				echo -e "所以不能选择 "$magenta"80"$none" 或 "$magenta"443"$none" 端口"
+				echo -e " "$magenta"80"$none" 및 "$magenta"443"$none" 포트는 선택 불가능합니다."
 				error
 			elif [[ $dynamicPort ]] && [[ $v2ray_dynamicPort_start == $new_ssport || $v2ray_dynamicPort_end == $new_ssport ]]; then
 				echo
-				echo -e " 抱歉，此端口和 V2Ray 动态端口 冲突，当前 V2Ray 动态端口范围为：${cyan}$port_range${none}"
+				echo -e " 죄송합니다. 이 포트와 V2Ray 동적포트가 충돌합니다. 기존 V2Ray 동적포트 범위：${cyan}$port_range${none}"
 				error
 			elif [[ $dynamicPort ]] && [[ $v2ray_dynamicPort_start -lt $new_ssport && $new_ssport -le $v2ray_dynamicPort_end ]]; then
 				echo
-				echo -e " 抱歉，此端口和 V2Ray 动态端口 冲突，当前 V2Ray 动态端口范围为：${cyan}$port_range${none}"
+				echo -e " 죄송합니다. 이 포트와 V2Ray 동적포트가 충돌합니다. 기존 V2Ray 동적포트 범위：${cyan}$port_range${none}"
 				error
 			elif [[ $socks && $new_ssport == $socks_port ]]; then
 				echo
-				echo -e "抱歉, 此端口跟 Socks 端口冲突...当前 Socks 端口: ${cyan}$socks_port$none"
+				echo -e " 죄송합니다. 이 포트와 Socks 포트가 충돌합니다. 기존 Socks 포트: ${cyan}$socks_port$none"
 				error
 			elif [[ $mtproto && $new_ssport == $mtproto_port ]]; then
 				echo
-				echo -e "抱歉, 此端口跟 MTProto 端口冲突...当前 MTProto 端口: ${cyan}$mtproto_port$none"
+				echo -e " 죄송합니다. 이 포트와 MTProto 포트가 충돌합니다. 기존 MTProto 포트: ${cyan}$mtproto_port$none"
 				error
 			else
 				echo
 				echo
-				echo -e "$yellow Shadowsocks 端口 = $cyan$new_ssport$none"
+				echo -e "$yellow Shadowsocks 포트 = $cyan$new_ssport$none"
 				echo "----------------------------------------------------------------"
 				echo
 				break
@@ -383,20 +383,20 @@ shadowsocks_port_config() {
 shadowsocks_password_config() {
 
 	while :; do
-		echo -e "请输入 "$yellow"Shadowsocks"$none" 密码"
-		read -p "$(echo -e "(默认密码: ${cyan}233blog.com$none)"): " new_sspass
-		[ -z "$new_sspass" ] && new_sspass="233blog.com"
+		echo -e " "$yellow"Shadowsocks"$none" 비밀번호를 입력해 주세요."
+		read -p "$(echo -e "(기본 비번: ${cyan}szkorean.net$none)"): " new_sspass
+		[ -z "$new_sspass" ] && new_sspass="szkorean.net"
 		case $new_sspass in
 		*[/$]*)
 			echo
-			echo -e " 由于这个脚本太辣鸡了..所以密码不能包含$red / $none或$red $ $none这两个符号.... "
+			echo -e " 이 스크립트가 좀 구려요.. 그래서 $red / $none또는$red $ $none 특수기호는 비번에 포함시킬 수 없습니다.... "
 			echo
 			error
 			;;
 		*)
 			echo
 			echo
-			echo -e "$yellow Shadowsocks 密码 = $cyan$new_sspass$none"
+			echo -e "$yellow Shadowsocks 비밀번호 = $cyan$new_sspass$none"
 			echo "----------------------------------------------------------------"
 			echo
 			break
@@ -410,21 +410,21 @@ shadowsocks_password_config() {
 shadowsocks_ciphers_config() {
 
 	while :; do
-		echo -e "请选择 "$yellow"Shadowsocks"$none" 加密协议 [${magenta}1-7$none]"
+		echo -e " "$yellow"Shadowsocks"$none" 암호화 프로토콜을 선택하세요. [${magenta}1-7$none]"
 		for ((i = 1; i <= ${#ciphers[*]}; i++)); do
 			ciphers_show="${ciphers[$i - 1]}"
 			echo
 			echo -e "$yellow $i. $none${ciphers_show}"
 		done
 		echo
-		read -p "$(echo -e "(默认加密协议: ${cyan}${ciphers[6]}$none)"):" ssciphers_opt
+		read -p "$(echo -e "(기본 암호화 프로토콜: ${cyan}${ciphers[6]}$none)"):" ssciphers_opt
 		[ -z "$ssciphers_opt" ] && ssciphers_opt=7
 		case $ssciphers_opt in
 		[1-7])
 			new_ssciphers=${ciphers[$ssciphers_opt - 1]}
 			echo
 			echo
-			echo -e "$yellow Shadowsocks 加密协议 = $cyan${new_ssciphers}$none"
+			echo -e "$yellow Shadowsocks 암호화 프로토콜 = $cyan${new_ssciphers}$none"
 			echo "----------------------------------------------------------------"
 			echo
 			break
@@ -440,18 +440,18 @@ shadowsocks_ciphers_config() {
 change_shadowsocks_port() {
 	echo
 	while :; do
-		echo -e "请输入 "$yellow"Shadowsocks"$none" 端口 ["$magenta"1-65535"$none"]"
-		read -p "$(echo -e "(当前端口: ${cyan}$ssport$none):") " new_ssport
+		echo -e " "$yellow"Shadowsocks"$none" 포트번호를 입력해주세요. ["$magenta"1-65535"$none"]"
+		read -p "$(echo -e "(기존 포트번호: ${cyan}$ssport$none):") " new_ssport
 		[ -z "$new_ssport" ] && error && continue
 		case $new_ssport in
 		$ssport)
 			echo
-			echo " 跟当前端口一毛一样....修改个鸡鸡哦"
+			echo " 기존 번호랑 같으면 안 된다구요.... 수정해주세요."
 			error
 			;;
 		$v2ray_port)
 			echo
-			echo -e " 不能和$cyan V2Ray 端口 $none一毛一样...."
+			echo -e " $cyan V2Ray 포트 번호$none랑 같으면 안돼요...."
 			error
 			;;
 		[1-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-5][0-9][0-9][0-9][0-9] | 6[0-4][0-9][0-9][0-9] | 65[0-4][0-9][0-9] | 655[0-3][0-5])
