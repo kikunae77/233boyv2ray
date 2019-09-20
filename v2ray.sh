@@ -460,30 +460,30 @@ change_shadowsocks_port() {
 			fi
 			if [[ $tls && $new_ssport == "80" ]] || [[ $tls && $new_ssport == "443" ]]; then
 				echo
-				echo -e "由于你已选择了 "$green"WebSocket + TLS $none或$green HTTP/2"$none" 传输协议."
+				echo -e " "$green"WebSocket + TLS $none및$green HTTP/2"$none" 전송 프로토콜이 사용중인 포트입니다."
 				echo
-				echo -e "所以不能选择 "$magenta"80"$none" 或 "$magenta"443"$none" 端口"
+				echo -e " "$magenta"80"$none" 및 "$magenta"443"$none" 포트는 선택 불가능합니다."
 				error
 			elif [[ $dynamicPort ]] && [[ $v2ray_dynamicPort_start == $new_ssport || $v2ray_dynamicPort_end == $new_ssport ]]; then
 				echo
-				echo -e " 抱歉，此端口和 V2Ray 动态端口 冲突，当前 V2Ray 动态端口范围为：${cyan}$port_range${none}"
+				echo -e " 죄송합니다. 이 포트와 V2Ray 동적포트가 충돌합니다. 기존 V2Ray 동적포트 범위：${cyan}$port_range${none}"
 				error
 			elif [[ $dynamicPort ]] && [[ $v2ray_dynamicPort_start -lt $new_ssport && $new_ssport -le $v2ray_dynamicPort_end ]]; then
 				echo
-				echo -e " 抱歉，此端口和 V2Ray 动态端口 冲突，当前 V2Ray 动态端口范围为：${cyan}$port_range${none}"
+				echo -e " 죄송합니다. 이 포트와 V2Ray 동적포트가 충돌합니다. 기존 V2Ray 동적포트 범위：${cyan}$port_range${none}"
 				error
 			elif [[ $socks && $new_ssport == $socks_port ]]; then
 				echo
-				echo -e "抱歉, 此端口跟 Socks 端口冲突...当前 Socks 端口: ${cyan}$socks_port$none"
+				echo -e " 죄송합니다. 이 포트와 Socks 포트가 충돌합니다. 기존 Socks 포트: ${cyan}$socks_port$none"
 				error
 			elif [[ $mtproto && $new_ssport == $mtproto_port ]]; then
 				echo
-				echo -e "抱歉, 此端口跟 MTProto 端口冲突...当前 MTProto 端口: ${cyan}$mtproto_port$none"
+				echo -e " 죄송합니다. 이 포트와 MTProto 포트가 충돌합니다. 기존 MTProto 포트: ${cyan}$mtproto_port$none"
 				error
 			else
 				echo
 				echo
-				echo -e "$yellow Shadowsocks 端口 = $cyan$new_ssport$none"
+				echo -e "$yellow Shadowsocks 포트 = $cyan$new_ssport$none"
 				echo "----------------------------------------------------------------"
 				echo
 				pause
@@ -508,25 +508,25 @@ change_shadowsocks_port() {
 change_shadowsocks_password() {
 	echo
 	while :; do
-		echo -e "请输入 "$yellow"Shadowsocks"$none" 密码"
-		read -p "$(echo -e "(当前密码：${cyan}$sspass$none)"): " new_sspass
+		echo -e " "$yellow"Shadowsocks"$none" 비밀번호를 입력해 주세요."
+		read -p "$(echo -e "(기존 비밀번호：${cyan}$sspass$none)"): " new_sspass
 		[ -z "$new_sspass" ] && error && continue
 		case $new_sspass in
 		$sspass)
 			echo
-			echo " 跟当前密码一毛一样....修改个鸡鸡哦"
+			echo " 기존 비밀번호와 동일합니다. 다르게 설정해 주세요."
 			error
 			;;
 		*[/$]*)
 			echo
-			echo -e " 由于这个脚本太辣鸡了..所以密码不能包含$red / $none或$red $ $none这两个符号.... "
+			echo -e " 이 스크립트가 좀 구려요.. 그래서 $red / $none또는$red $ $none 특수기호는 비번에 포함시킬 수 없습니다...."
 			echo
 			error
 			;;
 		*)
 			echo
 			echo
-			echo -e "$yellow Shadowsocks 密码 = $cyan$new_sspass$none"
+			echo -e "$yellow Shadowsocks 비밀번호 = $cyan$new_sspass$none"
 			echo "----------------------------------------------------------------"
 			echo
 			pause
@@ -547,26 +547,26 @@ change_shadowsocks_password() {
 change_shadowsocks_ciphers() {
 	echo
 	while :; do
-		echo -e "请选择 "$yellow"Shadowsocks"$none" 加密协议 [${magenta}1-${#ciphers[*]}$none]"
+		echo -e " "$yellow"Shadowsocks"$none" 암호화 프로토콜을 선택하세요. [${magenta}1-${#ciphers[*]}$none]"
 		for ((i = 1; i <= ${#ciphers[*]}; i++)); do
 			ciphers_show="${ciphers[$i - 1]}"
 			echo
 			echo -e "$yellow $i. $none${ciphers_show}"
 		done
 		echo
-		read -p "$(echo -e "(当前加密协议: ${cyan}${ssciphers}$none)"):" ssciphers_opt
+		read -p "$(echo -e "(기존 암호화 프로토콜: ${cyan}${ssciphers}$none)"):" ssciphers_opt
 		[ -z "$ssciphers_opt" ] && error && continue
 		case $ssciphers_opt in
 		[1-7])
 			new_ssciphers=${ciphers[$ssciphers_opt - 1]}
 			if [[ $new_ssciphers == $ssciphers ]]; then
 				echo
-				echo " 跟当前加密协议一毛一样....修改个鸡鸡哦"
+				echo " 기존 암호화 프로토콜과 동일합니다. 다르게 선택해 주세요."
 				error && continue
 			fi
 			echo
 			echo
-			echo -e "$yellow Shadowsocks 加密协议 = $cyan${new_ssciphers}$none"
+			echo -e "$$yellow Shadowsocks 암호화 프로토콜 = $cyan${new_ssciphers}$none"
 			echo "----------------------------------------------------------------"
 			echo
 			pause
@@ -590,13 +590,13 @@ disable_shadowsocks() {
 	echo
 
 	while :; do
-		echo -e "是否关闭 ${yellow}Shadowsocks${none} [${magenta}Y/N$none]"
-		read -p "$(echo -e "(默认 [${cyan}N$none]):") " y_n
+		echo -e " ${yellow}Shadowsocks${none}를 중단 하시겠습니까?[${magenta}Y/N$none]"
+		read -p "$(echo -e "(기본값 [${cyan}N$none]):") " y_n
 		[[ -z "$y_n" ]] && y_n="n"
 		if [[ "$y_n" == [Yy] ]]; then
 			echo
 			echo
-			echo -e "$yellow 关闭 Shadowsocks = $cyan是$none"
+			echo -e "$yellow Shadowsocks 중단 = $cyan예$none"
 			echo "----------------------------------------------------------------"
 			echo
 			pause
@@ -608,12 +608,12 @@ disable_shadowsocks() {
 			echo
 			echo
 			echo
-			echo -e "$green Shadowsocks 已关闭...不过你也可以随时重新启用 Shadowsocks ...只要你喜欢$none"
+			echo -e "$green Shadowsocks가 이미 중단되었습니다... 나중에 Shadowsocks를 다시 시작하실 수 있습니다.$none"
 			echo
 			break
 		elif [[ "$y_n" == [Nn] ]]; then
 			echo
-			echo -e " $green已取消关闭 Shadowsocks ....$none"
+			echo -e " $green Shadowsocks 중단이 취소되었습니다....$none"
 			echo
 			break
 		else
@@ -624,15 +624,15 @@ disable_shadowsocks() {
 }
 change_v2ray_config() {
 	local _menu=(
-		"修改 V2Ray 端口"
-		"修改 V2Ray 传输协议"
-		"修改 V2Ray 动态端口 (如果可以)"
-		"修改 用户ID ( UUID )"
-		"修改 TLS 域名 (如果可以)"
-		"修改 分流的路径 (如果可以)"
-		"修改 伪装的网址 (如果可以)"
-		"关闭 网站伪装 和 路径分流 (如果可以)"
-		"开启 / 关闭 广告拦截"
+		" V2Ray 포트 수정"
+		" V2Ray 전송 프로토콜 수정"
+		" V2Ray 동적포트 수정 (가능한 경우)"
+		" 사용자 ID 수정 ( UUID )"
+		" TLS 도메인 수정 (가능한 경우)"
+		" Path 수정 (가능한 경우)"
+		" Proxy주소 수정 (가능한 경우)"
+		" Proxy 및 Path 중단 (가능한 경우)"
+		" hosts 차단 시작/중단"
 	)
 	while :; do
 		for ((i = 1; i <= ${#_menu[*]}; i++)); do
@@ -645,7 +645,7 @@ change_v2ray_config() {
 			fi
 		done
 		echo
-		read -p "$(echo -e "请选择 [${magenta}1-${#_menu[*]}$none]:")" _opt
+		read -p "$(echo -e "선택하세요. [${magenta}1-${#_menu[*]}$none]:")" _opt
 		if [[ -z $_opt ]]; then
 			error
 		else
@@ -704,55 +704,55 @@ change_v2ray_config() {
 change_v2ray_port() {
 	if [[ $v2ray_transport == 4 ]]; then
 		echo
-		echo -e " 由于你目前使用的是$yellow WebSocket + TLS $none传输协议...所以修不修改 V2Ray 端口没有什么不一样的"
+		echo -e " 기존에$yellow WebSocket + TLS $none전송 프로토콜을 사용 중이므로, V2Ray 포트 변경은 의미가 없습니다."
 		echo
-		echo " 如果你想要使用其他端口...可以先修改 V2Ray 的传输协议..之后再修改 V2Ray 端口"
+		echo " 만약 다른 포토를 사용하고 싶으시면, 우선 V2Ray 전송 프로토콜을 먼저 변경하시고 V2Ray 포트를 변경하세요."
 		echo
 		change_v2ray_transport_ask
 	elif [[ $v2ray_transport == 5 ]]; then
 		echo
-		echo -e " 由于你目前使用的是$yellow HTTP/2 $none传输协议...所以修不修改 V2Ray 端口没有什么不一样的"
+		echo -e " 기존에$yellow HTTP/2 $none전송 프로토콜을 사용 중이므로, V2Ray 포트 변경은 의미가 없습니다."
 		echo
-		echo " 如果你想要使用其他端口...可以先修改 V2Ray 的传输协议..之后再修改 V2Ray 端口"
+		echo " 만약 다른 포토를 사용하고 싶으시면, 우선 V2Ray 전송 프로토콜을 먼저 변경하시고 V2Ray 포트를 변경하세요."
 		echo
 		change_v2ray_transport_ask
 	else
 		echo
 		while :; do
-			echo -e "请输入 "$yellow"V2Ray"$none" 端口 ["$magenta"1-65535"$none"]"
-			read -p "$(echo -e "(当前端口: ${cyan}${v2ray_port}$none):")" v2ray_port_opt
+			echo -e " "$yellow"V2Ray"$none" 포트번호 입력 ["$magenta"1-65535"$none"]"
+			read -p "$(echo -e "(기존 포트번호: ${cyan}${v2ray_port}$none):")" v2ray_port_opt
 			[[ -z $v2ray_port_opt ]] && error && continue
 			case $v2ray_port_opt in
 			$v2ray_port)
 				echo
-				echo " 哎呀...跟当前端口一毛一样呀...修改个鸡鸡哦"
+				echo " 아이고... 기존 포트와 동일합니다... 다른 포트로 수정해 주세요."
 				error
 				;;
 			[1-9] | [1-9][0-9] | [1-9][0-9][0-9] | [1-9][0-9][0-9][0-9] | [1-5][0-9][0-9][0-9][0-9] | 6[0-4][0-9][0-9][0-9] | 65[0-4][0-9][0-9] | 655[0-3][0-5])
 				if [[ $dynamicPort ]] && [[ $v2ray_dynamicPort_start == $v2ray_port_opt || $v2ray_dynamicPort_end == $v2ray_port_opt ]]; then
 					echo
-					echo -e " 抱歉，此端口和 V2Ray 动态端口 冲突，当前 V2Ray 动态端口范围为：${cyan}$port_range${none}"
+					echo -e " 죄송합니다. 이 포트와 V2Ray 동적포트가 충돌합니다. 기존 V2Ray 동적포트 범위：${cyan}$port_range${none}"
 					error
 				elif [[ $dynamicPort ]] && [[ $v2ray_dynamicPort_start -lt $v2ray_port_opt && $v2ray_port_opt -le $v2ray_dynamicPort_end ]]; then
 					echo
-					echo -e " 抱歉，此端口和 V2Ray 动态端口 冲突，当前 V2Ray 动态端口范围为：${cyan}$port_range${none}"
+					echo -e " 죄송합니다. 이 포트와 V2Ray 동적포트가 충돌합니다. 기존 V2Ray 동적포트 범위：${cyan}$port_range${none}"
 					error
 				elif [[ $shadowsocks && $v2ray_port_opt == $ssport ]]; then
 					echo
-					echo -e "抱歉, 此端口跟 Shadowsocks 端口冲突...当前 Shadowsocks 端口: ${cyan}$ssport$none"
+					echo -e " 죄송합니다. 이 포트와 Shadowsocks 포트가 충돌합니다...기존 Shadowsocks 포트: ${cyan}$ssport$none"
 					error
 				elif [[ $socks && $v2ray_port_opt == $socks_port ]]; then
 					echo
-					echo -e "抱歉, 此端口跟 Socks 端口冲突...当前 Socks 端口: ${cyan}$socks_port$none"
+					echo -e " 죄송합니다. 이 포트와 Socks 포트가 충돌합니다. 기존 Socks 포트: ${cyan}$socks_port$none"
 					error
 				elif [[ $mtproto && $v2ray_port_opt == $mtproto_port ]]; then
 					echo
-					echo -e "抱歉, 此端口跟 MTProto 端口冲突...当前 MTProto 端口: ${cyan}$mtproto_port$none"
+					echo -e " 죄송합니다. 이 포트와 MTProto 포트가 충돌합니다. 기존 MTProto 포트: ${cyan}$mtproto_port$none"
 					error
 				else
 					echo
 					echo
-					echo -e "$yellow V2Ray 端口 = $cyan$v2ray_port_opt$none"
+					echo -e "$yellow V2Ray 포트 = $cyan$v2ray_port_opt$none"
 					echo "----------------------------------------------------------------"
 					echo
 					pause
@@ -779,8 +779,8 @@ change_v2ray_port() {
 download_v2ray_config_ask() {
 	echo
 	while :; do
-		echo -e "是否需要 下载 V2Ray 配置 / 生成配置信息链接 / 生成二维码链接 [${magenta}Y/N$none]"
-		read -p "$(echo -e "默认 [${cyan}N$none]:")" y_n
+		echo -e " V2Ray 설정 다운로드 / 설정정보 링크 생성 / QR코드 링크 생성을 하시겠습니까? [${magenta}Y/N$none]"
+		read -p "$(echo -e "기본값 [${cyan}N$none]:")" y_n
 		[ -z $y_n ] && y_n="n"
 		if [[ $y_n == [Yy] ]]; then
 			download_v2ray_config
@@ -796,8 +796,8 @@ download_v2ray_config_ask() {
 change_v2ray_transport_ask() {
 	echo
 	while :; do
-		echo -e "是否需要修改$yellow V2Ray $none传输协议 [${magenta}Y/N$none]"
-		read -p "$(echo -e "默认 [${cyan}N$none]:")" y_n
+		echo -e "$yellow V2Ray $none 전송 프로토콜을 수정하시겠습니까? [${magenta}Y/N$none]"
+		read -p "$(echo -e "기본값 [${cyan}N$none]:")" y_n
 		[ -z $y_n ] && break
 		if [[ $y_n == [Yy] ]]; then
 			change_v2ray_transport
@@ -812,7 +812,7 @@ change_v2ray_transport_ask() {
 change_v2ray_transport() {
 	echo
 	while :; do
-		echo -e "请选择 "$yellow"V2Ray"$none" 传输协议 [${magenta}1-${#transport[*]}$none]"
+		echo -e " "$yellow"V2Ray"$none" 전송 프로토콜 선택 [${magenta}1-${#transport[*]}$none]"
 		echo
 		for ((i = 1; i <= ${#transport[*]}; i++)); do
 			Stream="${transport[$i - 1]}"
@@ -825,48 +825,48 @@ change_v2ray_transport() {
 			fi
 		done
 		echo
-		echo "备注1: 含有 [dynamicPort] 的即启用动态端口.."
-		echo "备注2: [utp | srtp | wechat-video | dtls | wireguard] 分别伪装成 [BT下载 | 视频通话 | 微信视频通话 | DTLS 1.2 数据包 | WireGuard 数据包]"
+		echo "참고1: [dynamicPort] 포함시 동적포트가 시작됩니다.."
+		echo "참고2: [utp | srtp | wechat-video | dtls | wireguard] 는 각각 [BT 다운로드 | 영상통화 | 위챗영상통화 | DTLS 1.2 패킷 | WireGuard 패킷]으로 위장됩니다."
 		echo
-		read -p "$(echo -e "(当前传输协议: ${cyan}${transport[$v2ray_transport - 1]}$none)"):" v2ray_transport_opt
+		read -p "$(echo -e "(기존 전송 프로토콜: ${cyan}${transport[$v2ray_transport - 1]}$none)"):" v2ray_transport_opt
 		if [ -z "$v2ray_transport_opt" ]; then
 			error
 		else
 			case $v2ray_transport_opt in
 			$v2ray_transport)
 				echo
-				echo " 哎呀...跟当前传输协议一毛一样呀...修改个鸡鸡哦"
+				echo " 아이고...기존 전송 프로토콜과 동일합니다...다른 프로토콜로 수정해 주세요."
 				error
 				;;
 			4 | 5)
 				if [[ $v2ray_port == "80" || $v2ray_port == "443" ]]; then
 					echo
-					echo -e " 抱歉...如果你想要使用${cyan} ${transport[$v2ray_transport_opt - 1]} $none传输协议.. ${red}V2Ray 端口不能为 80 或者 443 ...$none"
+					echo -e " 죄송합니다...${cyan} ${transport[$v2ray_transport_opt - 1]} $none전송 프로토콜을 사용하시려면 ${red}V2Ray 포트는 80 또는 443을 사용할 수 없습니다...$none"
 					echo
-					echo -e " 当前 V2Ray 端口: ${cyan}$v2ray_port$none"
+					echo -e " 기존 V2Ray 포트: ${cyan}$v2ray_port$none"
 					error
 				elif [[ $shadowsocks ]] && [[ $ssport == "80" || $ssport == "443" ]]; then
 					echo
-					echo -e " 抱歉...如果你想要使用${cyan} ${transport[$v2ray_transport_opt - 1]} $none传输协议.. ${red}Shadowsocks 端口不能为 80 或者 443 ...$none"
+					echo -e " 죄송합니다...${cyan} ${transport[$v2ray_transport_opt - 1]} $none전송 프로토콜을 사용하시려면 ${red}Shadowsocks 포트는 80 또는 443을 사용할 수 없습니다...$none"
 					echo
-					echo -e " 当前 Shadowsocks 端口: ${cyan}$ssport$none"
+					echo -e " 기존 Shadowsocks 포트: ${cyan}$ssport$none"
 					error
 				elif [[ $socks ]] && [[ $socks_port == "80" || $socks_port == "443" ]]; then
 					echo
-					echo -e " 抱歉...如果你想要使用${cyan} ${transport[$v2ray_transport_opt - 1]} $none传输协议.. ${red}Socks 端口不能为 80 或者 443 ...$none"
+					echo -e " 죄송합니다...${cyan} ${transport[$v2ray_transport_opt - 1]} $none전송 프로토콜을 사용하시려면 ${red}Socks 포트는 80 또는 443을 사용할 수 없습니다...$none"
 					echo
-					echo -e " 当前 Socks 端口: ${cyan}$socks_port$none"
+					echo -e " 기존 Socks 포트: ${cyan}$socks_port$none"
 					error
 				elif [[ $mtproto ]] && [[ $mtproto_port == "80" || $mtproto_port == "443" ]]; then
 					echo
-					echo -e " 抱歉...如果你想要使用${cyan} ${transport[$v2ray_transport_opt - 1]} $none传输协议.. ${red}MTProto 端口不能为 80 或者 443 ...$none"
+					echo -e " 죄송합니다...${cyan} ${transport[$v2ray_transport_opt - 1]} $none전송 프로토콜을 사용하시려면 ${red}MTProto 포트는 80 또는 443을 사용할 수 없습니다...$none"
 					echo
-					echo -e " 当前 MTProto 端口: ${cyan}$mtproto_port$none"
+					echo -e " 기존 MTProto 포트: ${cyan}$mtproto_port$none"
 					error
 				else
 					echo
 					echo
-					echo -e "$yellow V2Ray 传输协议 = $cyan${transport[$v2ray_transport_opt - 1]}$none"
+					echo -e "$yellow V2Ray 전송 프로토콜 = $cyan${transport[$v2ray_transport_opt - 1]}$none"
 					echo "----------------------------------------------------------------"
 					echo
 					break
@@ -875,7 +875,7 @@ change_v2ray_transport() {
 			[1-9] | [1-2][0-9] | 3[0-2])
 				echo
 				echo
-				echo -e "$yellow V2Ray 传输协议 = $cyan${transport[$v2ray_transport_opt - 1]}$none"
+				echo -e "$yellow V2Ray 전송 프로토콜 = $cyan${transport[$v2ray_transport_opt - 1]}$none"
 				echo "----------------------------------------------------------------"
 				echo
 				break
@@ -946,29 +946,29 @@ tls_config() {
 		echo
 		echo
 		echo
-		echo -e "请输入一个 $magenta正确的域名$none，一定一定一定要正确，不！能！出！错！"
-		read -p "(例如：233blog.com): " new_domain
+		echo -e " $magenta정확한 도메인명$none을 입력해 주세요. 반드시, 꼭, 절대로 정확한 도메인명이어야 합니다. 틀리면 안되요!!"
+		read -p "(예：szkorean.net): " new_domain
 		[ -z "$new_domain" ] && error && continue
 		echo
 		echo
-		echo -e "$yellow 你的域名 = $cyan$new_domain$none"
+		echo -e "$yellow 도메인명 = $cyan$new_domain$none"
 		echo "----------------------------------------------------------------"
 		break
 	done
 	get_ip
 	echo
 	echo
-	echo -e "$yellow 请将 $magenta$new_domain$none $yellow解析到: $cyan$ip$none"
+	echo -e " $magenta$new_domain$none $yellow이 해석된 IP: $cyan$ip$none"
 	echo
-	echo -e "$yellow 请将 $magenta$new_domain$none $yellow解析到: $cyan$ip$none"
+	echo -e " $magenta$new_domain$none $yellow이 해석된 IP: $cyan$ip$none"
 	echo
-	echo -e "$yellow 请将 $magenta$new_domain$none $yellow解析到: $cyan$ip$none"
+	echo -e " $magenta$new_domain$none $yellow이 해석된 IP: $cyan$ip$none"
 	echo "----------------------------------------------------------------"
 	echo
 
 	while :; do
 
-		read -p "$(echo -e "(是否已经正确解析: [${magenta}Y$none]):") " record
+		read -p "$(echo -e "(제대로 해석되었습니까? : [${magenta}Y$none]):") " record
 		if [[ -z "$record" ]]; then
 			error
 		else
@@ -976,7 +976,7 @@ tls_config() {
 				domain_check
 				echo
 				echo
-				echo -e "$yellow 域名解析 = ${cyan}我确定已经有解析了$none"
+				echo -e "$yellow 도메인 해석 = ${cyan}정확하게 해석되었습니다.$none"
 				echo "----------------------------------------------------------------"
 				echo
 				break
@@ -1052,27 +1052,27 @@ tls_config() {
 auto_tls_config() {
 	echo -e "
 
-		安装 Caddy 来实现 自动配置 TLS
+		Caddy를 설치하여 자동으로 TLS를 설정합니다.
 		
-		如果你已经安装 Nginx 或 Caddy
+		Nginx 또는 Caddy 이미 설치하였고
 
-		$yellow并且..自己能搞定配置 TLS$none
+		$yellow직접 TLS 설정을 할 수 있으면$none
 
-		那么就不需要 打开自动配置 TLS
+		TLS 자동 설정을 켤 필요가 없습니다.
 		"
 	echo "----------------------------------------------------------------"
 	echo
 
 	while :; do
 
-		read -p "$(echo -e "(是否自动配置 TLS: [${magenta}Y/N$none]):") " auto_install_caddy
+		read -p "$(echo -e "(TLS 자동 설정을 하시겠습니까? : [${magenta}Y/N$none]):") " auto_install_caddy
 		if [[ -z "$auto_install_caddy" ]]; then
 			error
 		else
 			if [[ "$auto_install_caddy" == [Yy] ]]; then
 				echo
 				echo
-				echo -e "$yellow 自动配置 TLS = $cyan打开$none"
+				echo -e "$yellow TLS 자동 설정 = $cyan켬$none"
 				echo "----------------------------------------------------------------"
 				echo
 				path_config_ask
@@ -1103,7 +1103,7 @@ auto_tls_config() {
 			elif [[ "$auto_install_caddy" == [Nn] ]]; then
 				echo
 				echo
-				echo -e "$yellow 自动配置 TLS = $cyan关闭$none"
+				echo -e "$yellow TLS 자동 설정 = $cyan끔$none"
 				echo "----------------------------------------------------------------"
 				echo
 				pause
