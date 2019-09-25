@@ -979,7 +979,7 @@ error() {
 
 pause() {
 
-	read -rsp "$(echo -e "按$green Enter 回车键 $none继续....或按$red Ctrl + C $none取消.")" -d $'\n'
+	read -rsp "$(echo -e "$green Enter 키$none를 누르면 설치를 진행합니다.... 또는 $red Ctrl + C $none를 눌러 취소하세요.")" -d $'\n'
 	echo
 }
 do_service() {
